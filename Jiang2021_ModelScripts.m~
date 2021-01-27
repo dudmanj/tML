@@ -169,11 +169,13 @@ for alpha = alphas
                         plot(pos.x,pos.y,'LineWidth',2,'color',[0 0 0.5 0.025]); hold on;
                         plot(pos.x(hit_time(k)),pos.y(hit_time(k)),'*','LineWidth',2,'color',[0 0 0.5]); hold on;        
                     end
-                    subplot(1,3,2); hold off; plot(mu_spd(1:k),'o-','color',[0.5 0.5 0.5]); hold on; scatter(1:k,mu_spd(1:k),50,[1:k]>blocks(1),'filled'); colormap([ 1 0 0 ; 0 0 1 ]);
-                    ylabel('Speed (mu)'); box off;
+                    subplot(1,3,2); hold off; plot(mu_spd(1:k),'o-','color',[0.5 0.5 0.5]); hold on; plot(100*target_hit(1:k)+275,'*'); scatter(1:k,mu_spd(1:k),50,[1:k]>blocks(1),'filled'); colormap([ 1 0 0 ; 0 0 1 ]);
+                    if k==sum(blocks)
+                        legend('Speed (mean)','Success');
+                        box off;
+                    end
 
-                    subplot(133); hold off; plot(rew_rate(1:k),'-');
-                    ylabel('Reward rate (norm.)');  box off;
+                    subplot(133); hold off; plot(om_hd(1:k),'o-','color',[0.5 0.5 0.5]); hold on; plot(target_hit(1:k),'*'); plot(rew_rate(1:k),'-');
                     if qqq==1
                         drawnow;
                     end
@@ -282,6 +284,15 @@ for alpha = alphas
                 tmp_om = 0.1*randn(1,sum(blocks));
 
                 tmpC = conv(tmp,[-ones(1,4) ones(1,4)]./8,'same'); % mice seem to run a longer trajectory after a short one and vice versa
+
+                % draw arena
+                figure(10); clf;
+                        subplot(131); 
+                        patch(arena.x,arena.y,[0.95 0.9 0.95]); hold on;
+                        patch(target.x,target.y,[0.85 0.9 0.9]);
+                        patch(target2.x,target2.y,[0.9 0.9 0.85]);
+                        patch(target3.x,target3.y,[0.85 0.9 0.9]);
+                        patch(target4.x,target4.y,[0.9 0.9 0.85]);
 
                 mu_spd(1) = randperm(100,1)+275; 
                 om_hd(1) = 0;
@@ -401,6 +412,25 @@ for alpha = alphas
                     traj.y(k,:) = pos.y;
                     act_dist(k) = max(pos.y);
 
+                    if k<=blocks(1)
+                        subplot(131); 
+                        plot(pos.x,pos.y,'LineWidth',2,'color',[0.5 0 0 0.025]); hold on;
+                        plot(pos.x(hit_time(k)),pos.y(hit_time(k)),'*','LineWidth',2,'color',[0.5 0 0]); hold on;        
+                    else
+                        subplot(131); 
+                        plot(pos.x,pos.y,'LineWidth',2,'color',[0 0 0.5 0.025]); hold on;
+                        plot(pos.x(hit_time(k)),pos.y(hit_time(k)),'*','LineWidth',2,'color',[0 0 0.5]); hold on;        
+                    end
+                    subplot(1,3,2); hold off; plot(mu_spd(1:k),'o-','color',[0.5 0.5 0.5]); hold on; plot(100*target_hit(1:k)+275,'*'); scatter(1:k,mu_spd(1:k),50,[1:k]>blocks(1),'filled'); colormap([ 1 0 0 ; 0 0 1 ]);
+                    if k==sum(blocks)
+                        legend('Speed (mean)','Success');
+                        box off;
+                    end
+
+                    subplot(133); hold off; plot(om_hd(1:k),'o-','color',[0.5 0.5 0.5]); hold on; plot(target_hit(1:k),'*'); plot(rew_rate(1:k),'-');
+                    if qqq==1
+                        drawnow;
+                    end
                 end
 
                 transition(qqq) = blocks(1)+1;
