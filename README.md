@@ -1,2 +1,4 @@
-# tML
-Example scripts that implement the trajectory mesh learning model described in Jiang et al 2021 preprint
+# Trajector Mesh Learning (tML)
+In Jiang et al 2021 preprint (link to be added upon public release) we describe a simple reinforcement learning agent that learns to scale foraging trajectories. The learning rules the govern such a model are described in the text. Example Matlab scripts that implement these rules in the context of the tasks described in the paper. These data correspond to part of the data in Figure 2 of the preprint. Additional code for analysis of larger scale model runs, grid search optimizations, more detailed scripts for generating figures, and behavioral data will be placed here upon publication.
+
+These were tested on Matlab 2018b but have minimal requirements. A few conveience functions are included in the Dependencies folder and will need to be added to user path to run scripts.
